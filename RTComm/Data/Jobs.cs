@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RTComm.Data
 {
     public class Jobs
     {
-        public int JobId { get; set; }
-        public string JobName { get; set; }
-        public string JobCategory { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public decimal Cost { get; set; }
-        public ConstructionCo ConstructionName { get; set; } //does this work as a foreign key reference?
+        public ConstructionCo ConstructionCo { get; set; } //foreign key ref to constructionco
         public DateTime CreatedDate { get; set; }
 
-       // public string ClientName { get; set; }
-        public ICollection<Comments> Comments { get; set; }
-        public Client ClientName { get; set; } //does this work as a foreign key reference?
+        // public string ClientName { get; set; }
+        public ICollection<Comments> Comments { get; set; } //one too many relationship with comments
+        public Client Client { get; set; } //foreign key ref to clientname
 
     }
 }
