@@ -21,5 +21,16 @@ namespace RTComm.Data
                 Summary = Summaries[rng.Next(Summaries.Length)]
             }).ToArray());
         }
+
+        public Task<WeatherForecast> SetForecastAsync(WeatherForecast forecast)
+        {
+            // If this was real, do business logic + save to db here
+            return Task.FromResult(new WeatherForecast
+            {
+                Date = forecast.Date,
+                TemperatureC = 1337,
+                Summary = Summaries[0]
+            });
+        }
     }
 }
