@@ -7,8 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RTComm.Data;
-using Npgsql;
 
+using Npgsql;
+using RTComm.Services;
 
 namespace RTComm
 {
@@ -32,6 +33,7 @@ namespace RTComm
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddTransient<IClientService, ClientService>();
             services.AddSingleton<WeatherForecastService>();
         }
 
