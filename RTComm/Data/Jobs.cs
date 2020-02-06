@@ -5,6 +5,12 @@ namespace RTComm.Data
 {
     public class Jobs
     {
+        public Jobs (Client client, ConstructionCo constructionco)
+        {
+            Client = client;
+            ConstructionCo = constructionco;
+            
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
