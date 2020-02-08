@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RTComm.Services
 {
-    public interface IClientService
+    public interface IClientService  //Entities that implement the interface must define functionalities declared in the interface
     {
         Task<List<Client>> Get();
         Task<Client> Get(int id);
@@ -15,7 +15,7 @@ namespace RTComm.Services
         Task<Client> Update(Client client);
         Task<Client> Delete(Client client);
     }
-    public class ClientService:IClientService
+    public class ClientService:IClientService  //as this is inheriting from the interface, it MUST DEFINE the get,add,update,delete tasks specified ... it isn't necessary but i mean it's good practice IG
     {
    
             private readonly ApplicationDbContext _context;

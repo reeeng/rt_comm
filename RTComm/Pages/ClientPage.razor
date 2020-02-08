@@ -1,0 +1,44 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IClientService Service
+@page "/client"
+
+<h3>Client Data</h3>
+
+@if (clientList == null)
+{
+    <p><em>No clients at the moment...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Id</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var clientItem in clientList)
+            {
+                <tr>
+                    <td>@clientItem.Name</td>
+                    <td>@clientItem.Id</td>
+                    <td><input type="button" class="btn btn-primary" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" value="Delete" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div>
+    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add Task" />
+</div>
+
+
+@code {
+    List<Client> clientList;
+
+
+}

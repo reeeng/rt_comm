@@ -34,6 +34,8 @@ namespace RTComm
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IJobService, JobService>();
+            services.AddTransient<IConstructionService, ConstructionCoService>(); //adding job, client and constructionco services so they can be injected into blazor pages
             services.AddSingleton<WeatherForecastService>();
         }
 
