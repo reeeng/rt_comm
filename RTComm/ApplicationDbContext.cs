@@ -16,5 +16,9 @@ namespace RTComm
         {
 
         }
+
+        public ApplicationDbContext()
+        {
+        }
     }
 }

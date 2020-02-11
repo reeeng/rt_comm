@@ -24,7 +24,7 @@ namespace RTComm.Data
 
         public Task<WeatherForecast> SetForecastAsync(WeatherForecast forecast)
         {
-            // If this was real, do business logic + save to db here
+            
             return Task.FromResult(new WeatherForecast
             {
                 Date = forecast.Date,

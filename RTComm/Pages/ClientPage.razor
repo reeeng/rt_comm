@@ -1,7 +1,9 @@
 ﻿@using RTComm.Data
 @using RTComm.Services
 @inject IClientService Service
+@inject IJSRuntime jsRuntime
 @page "/client"
+
 
 <h3>Client Data</h3>
 
@@ -25,20 +27,63 @@ else
                 <tr>
                     <td>@clientItem.Name</td>
                     <td>@clientItem.Id</td>
-                    <td><input type="button" class="btn btn-primary" value="Edit" /></td>
-                    <td><input type="button" class="btn btn-danger" value="Delete" /></td>
+                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(clientItem))" data-toggle="modal" data-target="#clientModal" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(clientItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+
 <div>
-    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add Task" />
+    <input type="button" data-toggle="modal" data-target="#clientModal" class="btn btn-primary" value="Add Client" @onclick="(() => InitializeClientObject())" />
 </div>
+
+
+<ClientDelete OnClick="@Delete" />
+<ClientAdd ClientObject=clientObject DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></ClientAdd>
 
 
 @code {
     List<Client> clientList;
+    Client clientObject = new Client();
+    string customHeader = string.Empty;
 
+    protected override async Task OnInitializedAsync()
+    {
+        clientList = await Service.Get();
+
+    }
+    private void InitializeClientObject()
+    {
+        clientObject = new Client();
+        customHeader = "Add New Client";
+
+    }
+    private async void DataChanged()
+    {
+        clientList = await Service.Get();
+        StateHasChanged();
+
+    }
+
+    private void PrepareForEdit(Client task)
+    {
+        clientObject = task;
+        customHeader = "Edit Client";
+    }
+
+    private void PrepareForDelete(Client task)
+    {
+        clientObject = task;
+    }
+    private async Task Delete()
+    {
+        var task = await Service.Delete(clientObject);
+        await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
+        clientList = await Service.Get();
+        clientObject = new Client();
+    }
 
 }

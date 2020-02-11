@@ -1,0 +1,65 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IClientService service
+@inject IJSRuntime jsRuntime
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="clientModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@CustomHeader</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@ClientObject" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+                        <label for="clientName">Client Name</label>
+                        <input type="hidden" @bind-value="@ClientObject.Id" />
+                        <InputText id="name" class="form-control" @bind-Value="@ClientObject.Name" />
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Client ClientObject { get; set; }
+
+    [Parameter]
+    public RenderFragment CustomHeader { get; set; }
+
+    [Parameter]
+    public Action DataChanged { get; set; }
+
+    private async Task CloseClientModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "clientModal");
+    }
+
+    private async void HandleValidSubmit()
+    {
+         if (ClientObject.Id == 0)
+    {
+        await service.Add(ClientObject);
+    }
+    else
+    {
+        await service.Update(ClientObject);
+    }
+        await CloseClientModal();
+        DataChanged?.Invoke(); 
+    }
+}
