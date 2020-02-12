@@ -49,13 +49,13 @@
         await jsRuntime.InvokeAsync<object>("CloseModal", "clientModal");
     }
 
-    private async void HandleValidSubmit()
+    private async void HandleValidSubmit()//add client to db
     {
-         if (ClientObject.Id == 0)
+         if (ClientObject.Id == 0)//if ID is zero its a new client and will add
     {
         await service.Add(ClientObject);
     }
-    else
+    else//if id not 0 its an existing and will edit and refresh
     {
         await service.Update(ClientObject);
     }

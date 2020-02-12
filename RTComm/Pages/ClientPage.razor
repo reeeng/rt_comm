@@ -46,24 +46,24 @@ else
 
 
 @code {
-    List<Client> clientList;
-    Client clientObject = new Client();
-    string customHeader = string.Empty;
-
-    protected override async Task OnInitializedAsync()
+    List<Client> clientList; //list of all entries in client table
+    Client clientObject = new Client();//new object of type client to pass to add and delete pages - uses client.Id to identify
+    string customHeader = string.Empty;//custom header variable to be used in custom header function
+   
+    protected override async Task OnInitializedAsync() //fetch all clients function 
     {
         clientList = await Service.Get();
 
     }
-    private void InitializeClientObject()
+    private void InitializeClientObject() //create a new client function - triggered with add client btn
     {
         clientObject = new Client();
-        customHeader = "Add New Client";
+        customHeader = "Add New Client";//will be custom header value of popup if add client button clicked
 
     }
-    private async void DataChanged()
-    {
-        clientList = await Service.Get();
+    private async void DataChanged()//auto refresh the page..state has changed is for refreshing if it detects change
+    { 
+        clientList = await Service.Get();//fetch from DB
         StateHasChanged();
 
     }
