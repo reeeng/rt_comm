@@ -1,0 +1,91 @@
+﻿
+@using RTComm.Data
+@using RTComm.Services
+@inject IConstructionService constructionservice
+@inject IJSRuntime jsRuntime
+@page "/constructionco"
+
+<h3>Below is a list of construction companies currently contracted to REE Engineering</h3>
+
+@if (conList == null)
+{
+    <p><em>No construction companies at the moment...</em></p>
+}
+
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Id</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var conItem in conList)
+            {
+                <tr>
+                    <td>@conItem.Name</td>
+                    <td>@conItem.ID</td>
+                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(conItem))" data-toggle="modal" data-target="#conModal" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(conItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <input type="button" data-toggle="modal" data-target="#conModal" class="btn btn-primary" value="Add Construction Company" @onclick="(() => InitializeConObject())" />
+    </div>
+
+
+    <ClientDelete OnClick="@Delete" />
+    <ConstructionAdd ConObject=conObject DataChanged="@DataChanged"><CustomHeader>@conHeader</CustomHeader></ConstructionAdd>
+
+
+
+    @code {
+
+        List<ConstructionCo> conList; //list of all entries in client table
+        ConstructionCo conObject = new ConstructionCo();//new object of type client to pass to add and delete pages - uses client.Id to identify
+        string conHeader = string.Empty;//custom header variable to be used in custom header function
+
+
+        protected override async Task OnInitializedAsync() //fetch all clients function
+        {
+            conList = await constructionservice.Get();
+
+        }
+        private void InitializeConObject() //create a new client function - triggered with add client btn
+        {
+            conObject = new ConstructionCo();
+            conHeader = "Add New Construction Company";//will be custom header value of popup if add client button clicked
+
+        }
+        private async void DataChanged()//auto refresh the page..state has changed is for refreshing if it detects change
+        {
+            conList = await constructionservice.Get();//fetch from DB
+            StateHasChanged();
+
+        }
+
+        private void PrepareForEdit(ConstructionCo ConCo)
+        {
+            conObject = ConCo;
+            conHeader = "Edit Construction Company";
+        }
+
+        private void PrepareForDelete(ConstructionCo ConCo)
+        {
+            conObject = ConCo;
+        }
+        private async Task Delete()
+        {
+            var task = await constructionservice.Delete(conObject);
+            await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
+            conList = await constructionservice.Get();
+            conObject = new ConstructionCo();
+        }
+
+    }
+}
