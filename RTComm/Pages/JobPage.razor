@@ -3,6 +3,7 @@
 @inject IJobService JobService
 @inject IJSRuntime jsRuntime
 @inject IClientService ClientService
+@inject IConstructionService conservice
 @page "/jobs"
 <h3>JobPage</h3>
 
@@ -24,6 +25,7 @@ else
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Client</th>
+                <th>Construction Company</th>
 
 
             </tr>
@@ -39,7 +41,10 @@ else
                 <td>@jobItem.JobAddress</td>
                 <td>@jobItem.CreatedDate</td>
                 <td>@jobItem.EndDate</td>
-                <td>@jobItem.Client?.Name</td>
+                <td>
+                    @jobItem.Client?.Id
+                </td>
+                <td>@jobItem.ConstructionCo?.Name</td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(jobItem))" data-toggle="modal" data-target="#jobModal" value="Edit" /></td>
                 <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(jobItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
             </tr>
@@ -54,7 +59,7 @@ else
 </div>
 
 <ClientDelete OnClick="@Delete" />
-<JobAdd clientList="ClientList" JobObject="jobObject" DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></JobAdd>
+<JobAdd conList="ConList" clientList="ClientList" JobObject="jobObject" DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></JobAdd>
 
 
 @code {
@@ -63,12 +68,15 @@ else
     Jobs jobObject = new Jobs();//new object of type jobs to pass to add and delete jobs
     string customHeader = string.Empty;//custom header variable to be used in custom header function
     List<Client> ClientList;
+    List<ConstructionCo> ConList;
+    
 
     protected override async Task OnInitializedAsync() //fetch all clients function
     
     {
         jobList = await JobService.Get();
         ClientList = await ClientService.Get();
+        ConList = await conservice.Get();
         
 
   
