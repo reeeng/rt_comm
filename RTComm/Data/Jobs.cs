@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
 namespace RTComm.Data
@@ -11,11 +12,25 @@ namespace RTComm.Data
             ConstructionCo = constructionco;
             
         }*/
+
+
         public int Id { get; set; }
+        [Required(ErrorMessage = "Job name is required")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "A description is required")]
         public string Description { get; set; }
+
+        [Required(ErrorMessage = "A job cost is required")]
         public decimal Cost { get; set; }
+        public string JobAddress { get; set; }
+
+        [Required(ErrorMessage = "An end date is required, even if estimated")]
+        public DateTime EndDate { get; set; }
+
         public ConstructionCo ConstructionCo { get; set; } //foreign key ref to constructionco
+
+        [Required(ErrorMessage = "A start date is required")]
         public DateTime CreatedDate { get; set; }
 
         // public string ClientName { get; set; }
