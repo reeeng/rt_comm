@@ -53,7 +53,7 @@ else
 </div>
 
 <ClientDelete OnClick="@Delete" />
-<JobAdd JobObject="jobObject" DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></JobAdd>
+<JobAdd clientList="ClientList" JobObject="jobObject" DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></JobAdd>
 
 
 @code {
@@ -61,17 +61,16 @@ else
     List<Jobs> jobList; //list of all entries in job table
     Jobs jobObject = new Jobs();//new object of type jobs to pass to add and delete jobs
     string customHeader = string.Empty;//custom header variable to be used in custom header function
-    List<Client> clientList;
+    List<Client> ClientList;
 
     protected override async Task OnInitializedAsync() //fetch all clients function
     
     {
         jobList = await JobService.Get();
-    
+        ClientList = await ClientService.Get();
         
 
-    
-
+  
     }
     private void InitializeJobObject() //create a new job function - triggered with add job btn
     {

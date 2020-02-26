@@ -38,22 +38,18 @@
                         <InputText id="cost" class="form-control" @bind-Value="@JobObject.JobAddress" />
                         <div class="form-group">
                             <label for="client">Client</label>
-                            <InputSelect id="Client" class="form-control"
-                                         @bind-Value="JobObject.Client">
-                                <option value="">Select</option>
-                                @foreach (var clientid in clientList)
+                            <select @bind="JobObject.Client">
+
+                                @if (clientList != null)
                                 {
-                                    <option value="@clientid.Id">
-                                        @clientid.Name
-                                       
-                                    </option>
+                                    @foreach (var client in clientList)
+                                    {
+                                        <option value="@client">@client.Name</option>
+                                    }
                                 }
-                            </InputSelect>
+                            </select>
                         </div>
-
                     </div>
-
-
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </EditForm>
@@ -61,8 +57,6 @@
         </div>
     </div>
 </div>
-
-
 @code {
     [Parameter]
     public Jobs JobObject { get; set; }
@@ -73,9 +67,8 @@
     [Parameter]
     public Action DataChanged { get; set; }
 
-    List<Client> clientList;
-    
-   
+    [Parameter]
+    public List<Client> clientList { get; set; }
 
     private async Task CloseJobModal()
     {
