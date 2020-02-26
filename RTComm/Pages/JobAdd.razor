@@ -1,0 +1,99 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IJobService JobService
+@inject IClientService ClientService
+@inject IJSRuntime jsRuntime
+
+
+<div class="modal" tabindex="-1" role="dialog" id="jobModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@CustomHeader</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@JobObject" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+
+                        <input type="hidden" @bind-value="@JobObject.Id" />
+                        <label for="clientName">Start Date</label>
+                        <input type="datetime" @bind-value="@JobObject.CreatedDate" />
+                        <br />
+                        <label for="clientName">End Date</label>
+
+                        <input type="datetime" @bind-value="@JobObject.EndDate" />
+                        <br />
+                        <label for="clientName">Job Name</label>
+                        <InputText id="name" class="form-control" @bind-Value="@JobObject.Name" />
+                        <label for="clientName">Job Description</label>
+                        <InputText id="description" class="form-control" @bind-Value="@JobObject.Description" />
+                        <label for="clientName">Job Cost</label>
+                        <InputNumber id="cost" class="form-control" @bind-Value="@JobObject.Cost" />
+                        <label for="clientName">Job Address </label>
+                        <InputText id="cost" class="form-control" @bind-Value="@JobObject.JobAddress" />
+                        <div class="form-group">
+                            <label for="client">Client</label>
+                            <InputSelect id="Client" class="form-control"
+                                         @bind-Value="JobObject.Client">
+                                <option value="">Select</option>
+                                @foreach (var clientid in clientList)
+                                {
+                                    <option value="@clientid.Id">
+                                        @clientid.Name
+                                       
+                                    </option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Jobs JobObject { get; set; }
+
+    [Parameter]
+    public RenderFragment CustomHeader { get; set; }
+
+    [Parameter]
+    public Action DataChanged { get; set; }
+
+    List<Client> clientList;
+    
+   
+
+    private async Task CloseJobModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "jobModal");
+    }
+
+    private async void HandleValidSubmit()//add job to db
+    {
+        if (JobObject.Id == 0)//if ID is zero its a new job and will add
+        {
+            await JobService.Add(JobObject);
+        }
+        else//if id not 0 its an existing and will edit and refresh
+        {
+            await JobService.Update(JobObject);
+        }
+        await CloseJobModal();
+        DataChanged?.Invoke();
+    }
+
+}
