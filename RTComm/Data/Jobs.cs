@@ -1,17 +1,17 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RTComm.Data
 {
     public class Jobs
     {
-      /*  public Jobs (Client client, ConstructionCo constructionco)
-        {
-            Client = client;
-            ConstructionCo = constructionco;
-            
-        }*/
+        /*  public Jobs (Client client, ConstructionCo constructionco)
+          {
+              Client = client;
+              ConstructionCo = constructionco;
+
+          }*/
 
 
         public int Id { get; set; }
@@ -35,8 +35,10 @@ namespace RTComm.Data
 
         // public string ClientName { get; set; }
         public ICollection<Comments> Comments { get; set; } //one too many relationship with comments
-        
+
         public Client Client { get; set; } //foreign key ref to clientname
+
+     
 
     }
 }

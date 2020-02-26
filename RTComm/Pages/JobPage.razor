@@ -23,6 +23,7 @@ else
                 <th>Job Address</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Client</th>
 
 
             </tr>
@@ -37,8 +38,8 @@ else
                 <td>@jobItem.Cost</td>
                 <td>@jobItem.JobAddress</td>
                 <td>@jobItem.CreatedDate</td>
-
                 <td>@jobItem.EndDate</td>
+                <td>@jobItem.Client?.Name</td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(jobItem))" data-toggle="modal" data-target="#jobModal" value="Edit" /></td>
                 <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(jobItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
             </tr>

@@ -38,13 +38,13 @@
                         <InputText id="cost" class="form-control" @bind-Value="@JobObject.JobAddress" />
                         <div class="form-group">
                             <label for="client">Client</label>
-                            <select @bind="JobObject.Client">
+                            <select @bind="clientId">
 
                                 @if (clientList != null)
                                 {
                                     @foreach (var client in clientList)
                                     {
-                                        <option value="@client">@client.Name</option>
+                                        <option value="@client.Id">@client.Name</option>
                                     }
                                 }
                             </select>
@@ -70,6 +70,8 @@
     [Parameter]
     public List<Client> clientList { get; set; }
 
+    private int clientId;
+
     private async Task CloseJobModal()
     {
         await jsRuntime.InvokeAsync<object>("CloseModal", "jobModal");
@@ -77,6 +79,7 @@
 
     private async void HandleValidSubmit()//add job to db
     {
+        JobObject.Client = clientList.Find(client => client.Id == clientId);
         if (JobObject.Id == 0)//if ID is zero its a new job and will add
         {
             await JobService.Add(JobObject);
@@ -84,6 +87,7 @@
         else//if id not 0 its an existing and will edit and refresh
         {
             await JobService.Update(JobObject);
+          
         }
         await CloseJobModal();
         DataChanged?.Invoke();
