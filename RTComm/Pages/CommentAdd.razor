@@ -1,0 +1,72 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IJobService JobService
+@inject ICommentService commentService
+@inject IJSRuntime jsRuntime
+
+
+<h3>AddComment</h3>
+<div class="modal" tabindex="-1" role="dialog" id="commentModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@CommentObject" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+
+                        <label for="JobName">Job Name: @JobObject.Name</label><br />
+                      
+                        <label for="Author">Day Submitted</label>
+                        <input type="datetime" @bind-value="CommentObject.Time" />
+                        <br />
+                        <label for="Author">Comment</label>
+                        <InputText id="comment" class="form-control" @bind-Value="@CommentObject.Comment" />
+                        <label for="Author">Author</label>
+                        <InputText id="author" class="form-control" @bind-Value="@CommentObject.Author" />
+
+
+                        <div class="form-group">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </EditForm>
+            </div>
+            </div>
+        </div>
+    </div>
+
+            @code {
+                [Parameter]
+                public Jobs JobObject { get; set; }
+
+                [Parameter]
+                public Action DataChanged { get; set; }
+
+                [Parameter]
+
+                public Comments CommentObject { get; set; }
+
+
+                private async Task CloseCommentModal()
+                {
+                    await jsRuntime.InvokeAsync<object>("CloseModal", "commentModal");
+                }
+
+                private async void HandleValidSubmit()
+                {
+
+                    CommentObject.Job = JobObject;
+                    await commentService.Add(CommentObject);
+                    
+                    await CloseCommentModal();
+
+                }
+            }

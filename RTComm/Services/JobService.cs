@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTComm.Data;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RTComm.Services
@@ -27,7 +25,7 @@ namespace RTComm.Services
         }
         public async Task<List<Jobs>> Get()
         {
-            return await _context.Jobs.ToListAsync();
+            return await _context.Jobs.Include(job => job.Comments).ToListAsync(); //NOTE - THIS IS TO FETCH ALL RELATIONSHIPS (SPECIFICALLY COMMENTS) AS IT IS NOT FETCHED BY DEFAULT
         }
         public async Task<Jobs> Get(int id)
         {

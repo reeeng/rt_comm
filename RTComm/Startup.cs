@@ -7,8 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RTComm.Data;
-
-using Npgsql;
 using RTComm.Services;
 
 namespace RTComm
@@ -26,7 +24,7 @@ namespace RTComm
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-           //connection string
+            //connection string
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("User ID=postgres;Password=omar1234;Host=localhost;Port=5432;Database=RTComm"));
             services.AddAuthentication(AzureADB2CDefaults.AuthenticationScheme)
                 .AddAzureADB2C(options => Configuration.Bind("AzureAdB2C", options));
@@ -34,6 +32,7 @@ namespace RTComm
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IJobService, JobService>();
             services.AddTransient<IConstructionService, ConstructionCoService>(); //adding job, client and constructionco services so they can be injected into blazor pages
             services.AddSingleton<WeatherForecastService>();

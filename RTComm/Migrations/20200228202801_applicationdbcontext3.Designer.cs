@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RTComm;
@@ -9,9 +10,10 @@ using RTComm;
 namespace RTComm.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200228202801_applicationdbcontext3")]
+    partial class applicationdbcontext3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,15 +51,15 @@ namespace RTComm.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("text");
 
-                    b.Property<int?>("JobId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int?>("jobId")
+                        .HasColumnType("integer");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("JobId");
+                    b.HasIndex("jobId");
 
                     b.ToTable("Comments");
                 });
@@ -122,9 +124,9 @@ namespace RTComm.Migrations
 
             modelBuilder.Entity("RTComm.Data.Comments", b =>
                 {
-                    b.HasOne("RTComm.Data.Jobs", "Job")
+                    b.HasOne("RTComm.Data.Jobs", "job")
                         .WithMany("Comments")
-                        .HasForeignKey("JobId");
+                        .HasForeignKey("jobId");
                 });
 
             modelBuilder.Entity("RTComm.Data.Jobs", b =>
