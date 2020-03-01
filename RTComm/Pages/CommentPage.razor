@@ -35,15 +35,15 @@
                         {
                             @foreach (var comment in JobObject.Comments)
                             {
-                                <tr>
-                                    <td>@comment.Job.Name</td>
-                                    <td>@comment.Comment</td>
-                                    <td>@comment.Author</td>
-                                    <td>@comment.Time</td>
+                        <tr>
+                            <td>@comment.Job.Name</td>
+                            <td>@comment.Comment</td>
+                            <td>@comment.Author</td>
+                            <td>@comment.Time</td>
+                            
 
 
-
-                                </tr>
+                        </tr>
                             }
                         }
                     </tbody>
@@ -61,6 +61,16 @@
 @code {
     [Parameter]
     public Jobs JobObject { get; set; }
- 
+
+    private void PrepareForEdit(Jobs job)//starting to add the edit functionality for comments but not sure yet
+    {
+        JobObject = job;
+    }
+
+    private void PrepareForDelete(Jobs job)
+    {
+        JobObject = job;
+    }
+    
 
 }

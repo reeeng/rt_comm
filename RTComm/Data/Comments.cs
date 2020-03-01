@@ -14,6 +14,8 @@ namespace RTComm.Data
         public string Author { get; set; }//placeholder until reference for users table is made (guess it should be clients or constructionco?
         public DateTime Time { get; set; }
 
+        public Event Event { get; set; }
+
 
 
     }
