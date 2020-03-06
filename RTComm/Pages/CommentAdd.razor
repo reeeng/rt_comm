@@ -20,9 +20,9 @@
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="form-group">
-
+                        
                         <label for="JobName">Job Name: @JobObject.Name</label><br />
-                      
+
                         <label for="Author">Day Submitted</label>
                         <input type="datetime" @bind-value="CommentObject.Time" />
                         <br />
@@ -62,9 +62,22 @@
 
                 private async void HandleValidSubmit()
                 {
+                    CommentObject.Job = JobObject;//binding a job to the comment object
+                    
+                     if (CommentObject.ID == 0)//if ID is zero its a new comment
+                     {
+                     
+                     await commentService.Add(CommentObject);
+                     
+                    }
+                    else//if id not 0 its an existing and will edit and refresh
+                    {
+                        await commentService.Update(CommentObject);
 
-                    CommentObject.Job = JobObject;
-                    await commentService.Add(CommentObject);
+                    }
+                    
+                    DataChanged?.Invoke();
+                                
                     
                     await CloseCommentModal();
 

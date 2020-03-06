@@ -31,16 +31,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (JobObject.Comments != null)
+                        @if (jobObject.Comments != null)
                         {
-                            @foreach (var comment in JobObject.Comments)
+                            @foreach (var comment in jobObject.Comments)
                             {
                         <tr>
                             <td>@comment.Job.Name</td>
                             <td>@comment.Comment</td>
                             <td>@comment.Author</td>
                             <td>@comment.Time</td>
-                            
+                            <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(comment))" data-toggle="modal" data-target="#commentModal" value="Edit" /></td>
 
 
                         </tr>
@@ -57,20 +57,34 @@
     </div>
 </div>
     </div>
+
+
     
 @code {
     [Parameter]
-    public Jobs JobObject { get; set; }
+    public Jobs jobObject { get; set; }
 
-    private void PrepareForEdit(Jobs job)//starting to add the edit functionality for comments but not sure yet
+    Comments commentObject = new Comments();
+
+    private async Task CloseCommentModal()
     {
-        JobObject = job;
+        await jsRuntime.InvokeAsync<object>("CloseModal", "commentViewModal");
     }
+
+    private async void PrepareForEdit(Comments comment)//trying to pass thru the specific comment, but how to do so? 
+    {
+        commentObject = comment;
+
+        await CloseCommentModal();
+
+    }
+
+
 
     private void PrepareForDelete(Jobs job)
     {
-        JobObject = job;
+        jobObject = job;
     }
-    
+
 
 }
