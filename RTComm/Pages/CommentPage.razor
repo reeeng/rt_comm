@@ -41,7 +41,7 @@
                             <td>@comment.Author</td>
                             <td>@comment.Time</td>
                             <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(comment))" data-toggle="modal" data-target="#commentModal" value="Edit" /></td>
-
+                            <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(comment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
 
                         </tr>
                             }
@@ -58,7 +58,7 @@
 </div>
     </div>
 
-
+<ClientDelete OnClick="@Delete" />
     
 @code {
     [Parameter]
@@ -81,10 +81,18 @@
 
 
 
-    private void PrepareForDelete(Jobs job)
+    private async void PrepareForDelete(Comments comment)
     {
-        jobObject = job;
+        commentObject = comment;
+        await CloseCommentModal();
     }
-
+     private async Task Delete()
+    {
+       
+        var task = await commentService.Delete(commentObject);
+        await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
+       
+        
+    }
 
 }
