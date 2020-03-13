@@ -49,7 +49,7 @@ else
     List<Client> clientList; //list of all entries in client table
     Client clientObject = new Client();//new object of type client to pass to add and delete pages - uses client.Id to identify
     string customHeader = string.Empty;//custom header variable to be used in custom header function
-   
+
     protected override async Task OnInitializedAsync() //fetch all clients function 
     {
         clientList = await Service.Get();
@@ -62,7 +62,7 @@ else
 
     }
     private async void DataChanged()//auto refresh the page..state has changed is for refreshing if it detects change
-    { 
+    {
         clientList = await Service.Get();//fetch from DB
         StateHasChanged();
 
@@ -80,10 +80,13 @@ else
     }
     private async Task Delete()
     {
+
         var task = await Service.Delete(clientObject);
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         clientList = await Service.Get();
         clientObject = new Client();
+        
+
     }
 
 }

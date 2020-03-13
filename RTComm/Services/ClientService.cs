@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTComm.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RTComm.Services
@@ -11,7 +12,7 @@ namespace RTComm.Services
         Task<Client> Get(int id);
         Task<Client> Add(Client client);
         Task<Client> Update(Client client);
-        Task<Client> Delete(Client client);
+        Task<bool> Delete(Client client);
     }
     public class ClientService : IClientService  //as this is inheriting from the interface, it MUST DEFINE the get,add,update,delete tasks specified ... it isn't necessary but i mean it's good practice IG
     {
@@ -24,15 +25,17 @@ namespace RTComm.Services
         }
         public async Task<List<Client>> Get()
         {
-            return await _context.Client.ToListAsync();
+
+            return await _context.Client.Where(client => client.IsActive).Include(client => client.Jobs).ToListAsync();
         }
         public async Task<Client> Get(int id)
         {
-            var client = await _context.Client.FindAsync(id);
+            var client = await _context.Client.FindAsync(id); 
             return client;
         }
         public async Task<Client> Add(Client client)
         {
+            client.IsActive = true;
             _context.Client.Add(client);
             await _context.SaveChangesAsync();
             return client;
@@ -44,11 +47,20 @@ namespace RTComm.Services
             await _context.SaveChangesAsync();
             return client;
         }
-        public async Task<Client> Delete(Client client)
+        public async Task<bool> Delete(Client client)
         {
-            _context.Client.Remove(client);
-            await _context.SaveChangesAsync();
-            return client;
+            
+            if (!client.Jobs.Any(job => job.IsActive))
+            {
+                client.IsActive = false;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
         }
     }
 }

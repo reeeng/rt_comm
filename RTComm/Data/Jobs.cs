@@ -35,9 +35,12 @@ namespace RTComm.Data
 
         // public string ClientName { get; set; }
         public ICollection<Comments> Comments { get; set; } //one too many relationship with comments
-        public ICollection<Event> Event { get; set; }
+        //public ICollection<Event> Event { get; set; }
 
         public Client Client { get; set; } //foreign key ref to clientname
+
+        [Required]
+        public bool IsActive { get; set; }
 
      
 

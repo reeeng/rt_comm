@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTComm.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RTComm.Services
@@ -25,7 +26,7 @@ namespace RTComm.Services
         }
         public async Task<List<Jobs>> Get()
         {
-            return await _context.Jobs.Include(job => job.Comments).ToListAsync(); //NOTE - THIS IS TO FETCH ALL RELATIONSHIPS (SPECIFICALLY COMMENTS) AS IT IS NOT FETCHED BY DEFAULT
+            return await _context.Jobs.Include(job => job.Comments).Where(job => job.IsActive).ToListAsync(); //NOTE - THIS IS TO FETCH ALL RELATIONSHIPS (SPECIFICALLY COMMENTS) AS IT IS NOT FETCHED BY DEFAULT
         }
         public async Task<Jobs> Get(int id)
         {
@@ -34,6 +35,7 @@ namespace RTComm.Services
         }
         public async Task<Jobs> Add(Jobs job)
         {
+            job.IsActive = true;
             _context.Jobs.Add(job);
             await _context.SaveChangesAsync();
             return job;
@@ -47,7 +49,7 @@ namespace RTComm.Services
         }
         public async Task<Jobs> Delete(Jobs job)
         {
-            _context.Jobs.Remove(job);
+            job.IsActive = false;
             await _context.SaveChangesAsync();
             return job;
         }

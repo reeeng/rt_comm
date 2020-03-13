@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTComm.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,8 @@ namespace RTComm.Services
         }
         public async Task<List<ConstructionCo>> Get()
         {
-            return await _context.ConstructionCo.ToListAsync();
+            
+            return await _context.ConstructionCo.Where(constructionco => constructionco.IsActive).ToListAsync();
         }
         public async Task<ConstructionCo> Get(int id)
         {
@@ -34,6 +34,7 @@ namespace RTComm.Services
         }
         public async Task<ConstructionCo> Add(ConstructionCo constructionCo)
         {
+            constructionCo.IsActive = true;
             _context.ConstructionCo.Add(constructionCo);
             await _context.SaveChangesAsync();
             return constructionCo;
@@ -47,7 +48,7 @@ namespace RTComm.Services
         }
         public async Task<ConstructionCo> Delete(ConstructionCo constructionCo)
         {
-            _context.ConstructionCo.Remove(constructionCo);
+            constructionCo.IsActive = false;
             await _context.SaveChangesAsync();
             return constructionCo;
         }
