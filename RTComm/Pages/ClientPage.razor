@@ -2,6 +2,7 @@
 @using RTComm.Services
 @inject IClientService Service
 @inject IJSRuntime jsRuntime
+@using Microsoft.JSInterop
 @page "/client"
 
 
@@ -50,7 +51,7 @@ else
     Client clientObject = new Client();//new object of type client to pass to add and delete pages - uses client.Id to identify
     string customHeader = string.Empty;//custom header variable to be used in custom header function
 
-    protected override async Task OnInitializedAsync() //fetch all clients function 
+    protected override async Task OnInitializedAsync() //fetch all clients function
     {
         clientList = await Service.Get();
 
@@ -85,7 +86,13 @@ else
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         clientList = await Service.Get();
         clientObject = new Client();
-        
+    
+    if (!task)
+        {
+            
+            Console.WriteLine("Cannot delete due to job dependancies");
+        }
+
 
     }
 

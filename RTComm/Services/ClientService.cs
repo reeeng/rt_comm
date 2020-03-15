@@ -26,16 +26,16 @@ namespace RTComm.Services
         public async Task<List<Client>> Get()
         {
 
-            return await _context.Client.Where(client => client.IsActive).Include(client => client.Jobs).ToListAsync();
+            return await _context.Client.Where(client => client.IsActive).Include(client => client.Jobs).ToListAsync(); //fetches clients where IsActive is true, and inludes the joblist within the fetch)
         }
         public async Task<Client> Get(int id)
         {
             var client = await _context.Client.FindAsync(id); 
             return client;
         }
-        public async Task<Client> Add(Client client)
+        public async Task<Client> Add(Client client) 
         {
-            client.IsActive = true;
+            client.IsActive = true;//making sure that client.IsActive is set to true when adding a new client
             _context.Client.Add(client);
             await _context.SaveChangesAsync();
             return client;
@@ -47,13 +47,13 @@ namespace RTComm.Services
             await _context.SaveChangesAsync();
             return client;
         }
-        public async Task<bool> Delete(Client client)
+        public async Task<bool> Delete(Client client) 
         {
             
-            if (!client.Jobs.Any(job => job.IsActive))
+            if (!client.Jobs.Any(job => job.IsActive))//if client.jobs has no entries (note the !), then it twill set is active to false and it will no longer be fetched by the clientservice.get
             {
-                client.IsActive = false;
-                await _context.SaveChangesAsync();
+                client.IsActive = false; //sets isactive to false if no jobs
+                await _context.SaveChangesAsync(); //saves changes
                 return true;
             }
 
