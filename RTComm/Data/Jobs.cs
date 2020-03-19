@@ -39,6 +39,8 @@ namespace RTComm.Data
 
         public Client Client { get; set; } //foreign key ref to clientname
 
+        public  ICollection<Event> Event { get; set; } //one to many ralationship with event
+
         [Required]
         public bool IsActive { get; set; }
 

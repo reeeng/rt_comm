@@ -1,0 +1,95 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IJobService JobService
+@inject IEventService eventService
+@inject IJSRuntime jsRuntime
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="eventAddModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add an Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@EventObject" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+
+                        <label for="JobName">Job Name: @JobObject.Name</label><br />
+
+                        <label for="Author">Day Submitted</label>
+                        <input type="datetime" @bind-value="EventObject.Time" />
+                        <br />
+                        <label for="Author">Author</label>
+                        <InputText id="comment" class="form-control" @bind-Value="@EventObject.Author" />
+                        <label for="Author">Event Type</label>
+                        <InputSelect id="Summary" class="form-control"
+                                     @bind-Value="EventObject.event2">
+                            <option value="">Select</option>
+                            @foreach (var status in EventTypeList)
+                            {
+                                <option value="@status">
+                                    @status
+                                </option>
+                            }
+                        </InputSelect>
+                        <div class="form-group">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Jobs JobObject { get; set; }
+
+    [Parameter]
+    public Action DataChanged { get; set; }
+
+    [Parameter]
+    public Event EventObject { get; set; }
+
+    List<string> EventTypeList = new List<string>() { "New Project", "Design Change", "Time Estimate Change", "Cost Estimate Change" };
+       
+
+    private async Task CloseEventModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "eventAddModal");
+    }
+
+    private async void HandleValidSubmit()
+    {
+        EventObject.Job = JobObject;//binding event to the job object that has been passed thru via parameter
+
+        if (EventObject.ID == 0)//if ID is zero its a new comment
+        {
+
+            await eventService.Add(EventObject);
+
+        }
+        else//if id not 0 its an existing and will edit and refresh
+        {
+            await eventService.Update(EventObject);
+
+        }
+
+        DataChanged?.Invoke();
+
+
+        await CloseEventModal();
+
+    }
+
+}

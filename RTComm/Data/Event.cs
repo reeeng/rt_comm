@@ -20,6 +20,8 @@ namespace RTComm.Data
         public EventType Type { get; set; } // Type of event
         public string Author { get; set; }//placeholder until reference for users table is made (guess it should be clients or constructionco?
         public DateTime Time { get; set; }
-        public ICollection<Comments> Comments { get; set; } //many-to-one relationship with comments (event can have many comments)
+
+        public string event2 { get; set; }
+       
     }
 }

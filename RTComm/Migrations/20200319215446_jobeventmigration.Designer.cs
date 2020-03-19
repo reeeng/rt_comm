@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RTComm;
@@ -9,9 +10,10 @@ using RTComm;
 namespace RTComm.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200319215446_jobeventmigration")]
+    partial class jobeventmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,6 +54,9 @@ namespace RTComm.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("text");
 
+                    b.Property<int?>("EventID")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("JobId")
                         .HasColumnType("integer");
 
@@ -59,6 +64,8 @@ namespace RTComm.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("EventID");
 
                     b.HasIndex("JobId");
 
@@ -102,9 +109,6 @@ namespace RTComm.Migrations
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
-
-                    b.Property<string>("event2")
-                        .HasColumnType("text");
 
                     b.HasKey("ID");
 
@@ -160,6 +164,10 @@ namespace RTComm.Migrations
 
             modelBuilder.Entity("RTComm.Data.Comments", b =>
                 {
+                    b.HasOne("RTComm.Data.Event", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("EventID");
+
                     b.HasOne("RTComm.Data.Jobs", "Job")
                         .WithMany("Comments")
                         .HasForeignKey("JobId");
