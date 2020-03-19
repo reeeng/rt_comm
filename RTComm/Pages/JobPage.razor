@@ -3,6 +3,7 @@
 @inject IJobService JobService
 @inject IJSRuntime jsRuntime
 @inject IClientService ClientService
+@inject IEventService eventService
 @inject IConstructionService conservice
 @page "/jobs"
 <h3>JobPage</h3>
@@ -48,6 +49,7 @@ else
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(jobItem))" data-toggle="modal" data-target="#jobModal" value="Edit" /></td>
                 <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(jobItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForComment(jobItem))" data-toggle="modal" data-target="#commentModal" value="Create Comment" /></td>
+                <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEvent(jobItem))" data-toggle="modal" data-target="#eventAddModal" value="Mark an Event" /></td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() =>ViewComment(jobItem))" data-toggle="modal" data-target="#commentViewModal" value="View Comments" /></td>
             </tr>
             }
@@ -64,7 +66,7 @@ else
 <JobAdd conList="ConList" clientList="ClientList" JobObject="jobObject" DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></JobAdd>
 <CommentAdd JobObject="jobObject" DataChanged="@DataChanged" CommentObject="commentObject"></CommentAdd>
 <CommentPage jobObject="jobObject"></CommentPage>
-
+<EventAdd JobObject="jobObject" DataChanged="@DataChanged" EventObject="eventObject"></EventAdd>
 
 @code {
 
@@ -73,6 +75,7 @@ else
     string customHeader = string.Empty;//custom header variable to be used in custom header function
     List<Client> ClientList;
     Comments commentObject = new Comments();
+    Event eventObject = new Event();
     List<ConstructionCo> ConList;
     
     
@@ -113,7 +116,12 @@ else
         commentObject = new Comments();
         
     }
-
+     private void PrepareForEvent(Jobs job)
+    {
+        jobObject = job;
+        eventObject = new Event();
+        
+    }
     private void ViewComment(Jobs job)
     {
         jobObject = job;
