@@ -73,7 +73,7 @@
     {
         EventObject.Job = JobObject;//binding event to the job object that has been passed thru via parameter
 
-        if (EventObject.ID == 0)//if ID is zero its a new comment
+        if (EventObject.ID == 0)//if ID is zero its a new event
         {
 
             await eventService.Add(EventObject);

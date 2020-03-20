@@ -51,6 +51,7 @@ else
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForComment(jobItem))" data-toggle="modal" data-target="#commentModal" value="Create Comment" /></td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEvent(jobItem))" data-toggle="modal" data-target="#eventAddModal" value="Mark an Event" /></td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() =>ViewComment(jobItem))" data-toggle="modal" data-target="#commentViewModal" value="View Comments" /></td>
+                <td><input type="button" class="btn btn-primary" @onclick="(() =>ViewEvent(jobItem))" data-toggle="modal" data-target="#eventViewModal" value="View Events" /></td>
             </tr>
             }
         </tbody>
@@ -66,6 +67,7 @@ else
 <JobAdd conList="ConList" clientList="ClientList" JobObject="jobObject" DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></JobAdd>
 <CommentAdd JobObject="jobObject" DataChanged="@DataChanged" CommentObject="commentObject"></CommentAdd>
 <CommentPage jobObject="jobObject"></CommentPage>
+<EventPage jobObject="jobObject"></EventPage>
 <EventAdd JobObject="jobObject" DataChanged="@DataChanged" EventObject="eventObject"></EventAdd>
 
 @code {
@@ -123,6 +125,11 @@ else
         
     }
     private void ViewComment(Jobs job)
+    {
+        jobObject = job;
+        
+    }
+    private void ViewEvent(Jobs job)
     {
         jobObject = job;
         

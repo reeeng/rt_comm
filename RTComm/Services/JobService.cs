@@ -26,7 +26,7 @@ namespace RTComm.Services
         }
         public async Task<List<Jobs>> Get()
         {
-            return await _context.Jobs.Include(job => job.Comments).Include(job => job.Event).Where(job => job.IsActive).ToListAsync(); //NOTE - THIS IS TO FETCH ALL RELATIONSHIPS (SPECIFICALLY COMMENTS) AS IT IS NOT FETCHED BY DEFAULT
+            return await _context.Jobs.Include(job => job.Event).Include(job => job.Comments).Where(job => job.IsActive).ToListAsync(); //NOTE - THIS IS TO FETCH ALL RELATIONSHIPS (SPECIFICALLY COMMENTS) AS IT IS NOT FETCHED BY DEFAULT
         }
         public async Task<Jobs> Get(int id)
         {

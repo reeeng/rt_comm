@@ -1,0 +1,78 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IJobService JobService
+@inject ICommentService commentService
+@inject IJSRuntime jsRuntime
+@inject IEventService eventService
+
+<div class="modal" tabindex="-1" role="dialog" id="eventViewModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Events</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Job Name</th>
+                            <th>Event</th>
+                            <th>Author</th>
+                            <th>Date Added</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (jobObject.Comments != null)
+                        {
+                            @foreach (var eventt in jobObject.Event)
+                            {
+                                <tr>
+                                    <td>@eventt.Job.Name</td>
+                                    <td>@eventt.event2</td>
+                                    <td>@eventt.Author</td>
+                                    <td>@eventt.Time</td>
+                                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(eventt))" data-toggle="modal" data-target="#eventAddModal" value="Edit" /></td>
+
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Jobs jobObject { get; set; }
+
+    Event eventObject = new Event();
+
+    private async Task CloseEventModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "eventViewModal");
+    }
+
+    private async void PrepareForEdit(Event eventt)//trying to pass thru the specific comment, but how to do so?
+    {
+        eventObject = eventt;
+
+        await CloseEventModal();
+
+    }
+
+}
