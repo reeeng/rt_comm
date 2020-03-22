@@ -40,7 +40,7 @@
                             <td>@comment.Comment</td>
                             <td>@comment.Author</td>
                             <td>@comment.Time</td>
-                            <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(comment))" data-toggle="modal" data-target="#commentModal" value="Edit" /></td>
+                            <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(comment))" data-toggle="modal" data-target="#commentEditModal" value="Edit" /></td>
                             
 
                         </tr>
@@ -57,6 +57,7 @@
     </div>
 </div>
     </div>
+<CommentEdit JobObject="jobObject" CommentObject="commentObject"></CommentEdit>
 
 <ClientDelete OnClick="@Delete" />
     
@@ -64,7 +65,7 @@
     [Parameter]
     public Jobs jobObject { get; set; }
 
-    Comments commentObject = new Comments();
+     Comments commentObject = new Comments();
 
     private async Task CloseCommentModal()
     {
@@ -74,6 +75,7 @@
     private async void PrepareForEdit(Comments comment)//trying to pass thru the specific comment, but how to do so? 
     {
         commentObject = comment;
+        Console.WriteLine(commentObject.ID);
 
         await CloseCommentModal();
 

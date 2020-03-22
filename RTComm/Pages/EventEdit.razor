@@ -6,7 +6,7 @@
 
 
 
-<div class="modal" tabindex="-1" role="dialog" id="eventAddModal">
+<div class="modal" tabindex="-1" role="dialog" id="eventEditModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,35 +62,26 @@
     public Event EventObject { get; set; }
 
     List<string> EventTypeList = new List<string>() { "New Project", "Design Change", "Time Estimate Change", "Cost Estimate Change" };
-       
+
 
     private async Task CloseEventModal()
     {
-        await jsRuntime.InvokeAsync<object>("CloseModal", "eventAddModal");
+        await jsRuntime.InvokeAsync<object>("CloseModal", "eventEditModal");
     }
 
     private async void HandleValidSubmit()
     {
         EventObject.Job = JobObject;
+
         
-        //binding event to the job object that has been passed thru via parameter
-
-        if (EventObject.ID == 0)//if ID is zero its a new event
-        {
-
-            await eventService.Add(EventObject);
-
-        }
-        else//if id not 0 its an existing and will edit and refresh
-        {
             await eventService.Update(EventObject);
 
-        }
+        
 
         DataChanged?.Invoke();
 
 
-        await CloseEventModal(); 
+        await CloseEventModal();
 
     }
 

@@ -37,7 +37,7 @@
                                     <td>@eventt.event2</td>
                                     <td>@eventt.Author</td>
                                     <td>@eventt.Time</td>
-                                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(eventt))" data-toggle="modal" data-target="#eventAddModal" value="Edit" /></td>
+                                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(eventt))" data-toggle="modal" data-target="#eventEditModal" value="Edit" /></td>
 
 
                                 </tr>
@@ -54,6 +54,7 @@
         </div>
     </div>
 </div>
+<EventEdit EventObject="eventObject" JobObject="jobObject"></EventEdit>
 
 
 @code {
@@ -67,7 +68,7 @@
         await jsRuntime.InvokeAsync<object>("CloseModal", "eventViewModal");
     }
 
-    private async void PrepareForEdit(Event eventt)//trying to pass thru the specific comment, but how to do so?
+    private async void PrepareForEdit(Event eventt)
     {
         eventObject = eventt;
 

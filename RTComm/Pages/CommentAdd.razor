@@ -51,7 +51,6 @@
                 public Action DataChanged { get; set; }
 
                 [Parameter]
-
                 public Comments CommentObject { get; set; }
 
 
@@ -62,6 +61,7 @@
 
                 private async void HandleValidSubmit()
                 {
+                    Console.WriteLine(CommentObject.ID);
                     CommentObject.Job = JobObject;//binding a job to the comment object
                     
                      if (CommentObject.ID == 0)//if ID is zero its a new comment

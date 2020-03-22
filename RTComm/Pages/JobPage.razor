@@ -52,6 +52,7 @@ else
                 <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEvent(jobItem))" data-toggle="modal" data-target="#eventAddModal" value="Mark an Event" /></td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() =>ViewComment(jobItem))" data-toggle="modal" data-target="#commentViewModal" value="View Comments" /></td>
                 <td><input type="button" class="btn btn-primary" @onclick="(() =>ViewEvent(jobItem))" data-toggle="modal" data-target="#eventViewModal" value="View Events" /></td>
+                
             </tr>
             }
         </tbody>
@@ -68,9 +69,11 @@ else
 <CommentAdd JobObject="jobObject" DataChanged="@DataChanged" CommentObject="commentObject"></CommentAdd>
 <CommentPage jobObject="jobObject"></CommentPage>
 <EventPage jobObject="jobObject"></EventPage>
+
 <EventAdd JobObject="jobObject" DataChanged="@DataChanged" EventObject="eventObject"></EventAdd>
 
-@code {
+
+@code { 
 
     List<Jobs> jobList; //list of all entries in job table
     Jobs jobObject = new Jobs();//new object of type jobs to pass to add and delete jobs
