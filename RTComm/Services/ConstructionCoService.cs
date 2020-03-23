@@ -12,7 +12,7 @@ namespace RTComm.Services
         Task<ConstructionCo> Get(int id);
         Task<ConstructionCo> Add(ConstructionCo constructionCo);
         Task<ConstructionCo> Update(ConstructionCo constructionCo);
-        Task<ConstructionCo> Delete(ConstructionCo constructionCo);
+        Task<bool> Delete(ConstructionCo constructionCo);
     }
     public class ConstructionCoService : IConstructionService
     {
@@ -25,7 +25,7 @@ namespace RTComm.Services
         public async Task<List<ConstructionCo>> Get()
         {
             
-            return await _context.ConstructionCo.Where(constructionco => constructionco.IsActive).ToListAsync();
+            return await _context.ConstructionCo.Where(constructionco => constructionco.IsActive).Include(conco => conco.Jobs).ToListAsync();
         }
         public async Task<ConstructionCo> Get(int id)
         {
@@ -46,11 +46,19 @@ namespace RTComm.Services
             await _context.SaveChangesAsync();
             return constructionCo;
         }
-        public async Task<ConstructionCo> Delete(ConstructionCo constructionCo)
+        public async Task<bool> Delete(ConstructionCo constructionCo)
         {
-            constructionCo.IsActive = false;
-            await _context.SaveChangesAsync();
-            return constructionCo;
+            if (!constructionCo.Jobs.Any(job => job.IsActive))
+            {
+                constructionCo.IsActive = false;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
 }

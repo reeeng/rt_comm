@@ -43,13 +43,39 @@ else
     <ConstructionAdd ConObject=conObject DataChanged="@DataChanged"><CustomHeader>@conHeader</CustomHeader></ConstructionAdd>
 
 
+    @if (ShowPopup)
+    {
+
+        <div class="modal" tabindex="-1" style="display:block" role="dialog" id="ErrorModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Cannot delete this construction company due to active job dependancies</h3>
+                      
+                        <button type="button" class="close"
+                                @onclick="ClosePopup">
+                            <span aria-hidden="true">X</span>
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     @code {
 
         List<ConstructionCo> conList; //list of all entries in client table
         ConstructionCo conObject = new ConstructionCo();//new object of type client to pass to add and delete pages - uses client.Id to identify
         string conHeader = string.Empty;//custom header variable to be used in custom header function
+      
+        private async void ClosePopup()
+        {
+            ShowPopup = false;
+            await jsRuntime.InvokeAsync<object>("CloseModal", "ErrorModal");
 
+        }
 
         protected override async Task OnInitializedAsync() //fetch all clients function
         {
@@ -79,13 +105,23 @@ else
         {
             conObject = ConCo;
         }
+
+        bool ShowPopup = false;
         private async Task Delete()
         {
             var task = await constructionservice.Delete(conObject);
             await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
             conList = await constructionservice.Get();
             conObject = new ConstructionCo();
+
+            if (!task)
+            {
+                Console.WriteLine("Cannot delete due to job dependancies");
+                ShowPopup = true;
+                await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
+            }
         }
+        
 
     }
 }

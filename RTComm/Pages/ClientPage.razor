@@ -41,6 +41,26 @@ else
     <input type="button" data-toggle="modal" data-target="#clientModal" class="btn btn-primary" value="Add Client" @onclick="(() => InitializeClientObject())" />
 </div>
 
+@if (ShowPopup)
+{
+    
+    <div class="modal" tabindex="-1" style="display:block" role="dialog"  id="ErrorModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Cannot delete this client due to active job dependancies</h3>
+                    <button type="button" class="close"
+                            @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 
 <ClientDelete OnClick="@Delete" />
 <ClientAdd ClientObject=clientObject DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></ClientAdd>
@@ -62,6 +82,13 @@ else
         customHeader = "Add New Client";//will be custom header value of popup if add client button clicked
 
     }
+
+    private async void ClosePopup()
+    {
+        ShowPopup = false;
+        await jsRuntime.InvokeAsync<object>("CloseModal", "ErrorModal");
+
+    }
     private async void DataChanged()//auto refresh the page..state has changed is for refreshing if it detects change
     {
         clientList = await Service.Get();//fetch from DB
@@ -79,6 +106,9 @@ else
     {
         clientObject = task;
     }
+
+    bool ShowPopup = false;
+
     private async Task Delete()
     {
 
@@ -86,11 +116,13 @@ else
         await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         clientList = await Service.Get();
         clientObject = new Client();
-    
-    if (!task)
+
+        if (!task)
         {
-            
+
             Console.WriteLine("Cannot delete due to job dependancies");
+            ShowPopup = true;
+            await jsRuntime.InvokeAsync<object>("CloseModal", "confirmDeleteModal");
         }
 
 
