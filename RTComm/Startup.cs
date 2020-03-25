@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.AspNetCore.Builder;
@@ -13,19 +14,33 @@ namespace RTComm
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            HostEnvironment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        private IWebHostEnvironment HostEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //connection string
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("User ID=postgres;Password=omar1234;Host=localhost;Port=5432;Database=RTComm"));
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
+            {
+                
+                //connection string
+                if (HostEnvironment.IsDevelopment())
+                {
+                    options.UseNpgsql(Configuration.GetConnectionString("database"));
+                }
+                else
+                {
+                    options.UseNpgsql(Environment.GetEnvironmentVariable("database") ?? throw new ApplicationException("No DB Connection String"));
+                }
+            });
+
             services.AddAuthentication(AzureADB2CDefaults.AuthenticationScheme)
                 .AddAzureADB2C(options => Configuration.Bind("AzureAdB2C", options));
 
