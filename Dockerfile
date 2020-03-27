@@ -18,6 +18,6 @@ ENV ASPNETCORE_ENVIRONMENT ${ASPNETCORE_ENVIRONMENT}
 
 COPY --from=build-env /app/out .
 
-EXPOSE 5000
+EXPOSE 80
 
 ENTRYPOINT ["dotnet", "RTComm.dll"]
