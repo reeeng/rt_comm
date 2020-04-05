@@ -37,7 +37,7 @@ namespace RTComm
                 }
                 else
                 {
-                    options.UseNpgsql(Environment.GetEnvironmentVariable("database") ?? throw new ApplicationException("No DB Connection String"));
+                    options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRESQLCONNSTR_database") ?? throw new ApplicationException("No DB Connection String"));
                 }
             });
 
