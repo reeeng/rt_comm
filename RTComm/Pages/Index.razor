@@ -1,15 +1,19 @@
 ﻿@page "/"
 <head>
-   
+   <div class="picture">
+        <a target="_blank" href="Logo.jpg">
+            <img src="Logo.jpg" alt="Company Logo" width="600" height="400">
+        </a>
+    </div>
 </head>
 
 <body>
     <header>
-        <img src="C:\Users\lymar\Documents\GitHub\rt_comm\RTComm\Logo.jpg">
+      <h1><center>Welcome to R.E.E. Engineering !</center></h1>
+        <h3>Who we are</h3>
     </header>
 
-<h1><center>Welcome to REE Engineering !</center></h1>
-<h2>Abstract</h2>
+
 <p> 
 R.E.E. Engineering is an architecture and civil engineering firm that works with clients who want structures built, 
 as well as with construction companies in order to realize their designs. They are embarking on a project utilizing 
@@ -24,16 +28,14 @@ This paper will outline how we intend to build all of these things, all while ad
     <div class="section">
         <div class="video-container">
             <video autoplay loop muted>
-                <source src="Video.mp4" type="Video/mp4">
+                <source id="video" src="@Video.mp4" type="Video/mp4">
             </video>
         </div>  
-    </div>
-    
-    
-    <div id="footer"> 
-                <p> Copy Right© R.E.E. Engineering</p>
     </div>
 
 </body>
 
+<div id="footer"> 
+    <p> Copy Right© R.E.E. Engineering</p>
+</div>
 

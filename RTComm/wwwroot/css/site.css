@@ -198,14 +198,25 @@ app {
         width: 100%;
     }
 
-    #footer {
-        text-align:center;
-    
+    div.Logo {
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 180px;
+    }
+
+    div.Logo:hover {
+  border: 1px solid #777;
+    }
+
+    div.Logo img {
+  width: 100%;
+  height: auto;
     }
 
 
+}
 
-
-
-
+#footer {
+    text-align:center;
 }
