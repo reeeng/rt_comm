@@ -30,7 +30,9 @@ else
                     <td>@clientItem.Id</td>
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(clientItem))" data-toggle="modal" data-target="#clientModal" value="Edit" /></td>
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(clientItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForJobView(clientItem))" data-toggle="modal" data-target="#ClientJobModal" value="View Jobs" /></td>
                 </tr>
+
             }
         </tbody>
     </table>
@@ -64,6 +66,7 @@ else
 
 <ClientDelete OnClick="@Delete" />
 <ClientAdd ClientObject=clientObject DataChanged="@DataChanged"><CustomHeader>@customHeader</CustomHeader></ClientAdd>
+<ClientJobs ClientObject="clientObject"></ClientJobs>
 
 
 @code {
@@ -100,6 +103,11 @@ else
     {
         clientObject = task;
         customHeader = "Edit Client";
+    }
+     private void PrepareForJobView(Client task)
+    {
+        clientObject = task;
+      
     }
 
     private void PrepareForDelete(Client task)

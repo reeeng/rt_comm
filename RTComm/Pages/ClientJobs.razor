@@ -1,0 +1,69 @@
+﻿@using RTComm.Data
+@using RTComm.Services
+@inject IJobService JobService
+@inject ICommentService commentService
+@inject IJSRuntime jsRuntime
+
+    <div class="modal" tabindex="-1" role="dialog" id="ClientJobModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Comments</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Job Name</th>
+                                <th>Job Cost</th>
+                                <th>Job Decription</th>
+                                <th>Active?</th>
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ClientObject.Jobs != null)
+                            {
+                                @foreach (var job in ClientObject.Jobs)
+                                {
+                                   
+                            <tr>
+                                <td>@job.Name</td>
+                                <td>@job.Cost.</td>
+                                <td>@job.Description.</td>
+                                <td>@job.IsActive</td>
+                            </tr>
+                                  
+
+                                        
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+@code {
+    [Parameter]
+    public Client ClientObject { get; set; }
+
+
+    private async Task CloseClientJobModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "ClientJobModal");
+    }
+
+}
