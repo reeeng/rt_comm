@@ -30,6 +30,7 @@ else
                     <td>@conItem.ID</td>
                     <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForEdit(conItem))" data-toggle="modal" data-target="#conModal" value="Edit" /></td>
                     <td><input type="button" class="btn btn-danger" @onclick="(() => PrepareForDelete(conItem))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" /></td>
+                    <td><input type="button" class="btn btn-primary" @onclick="(() => PrepareForJobView(conItem))" data-toggle="modal" data-target="#ConJobModal" value="View Jobs" /></td>
                 </tr>
             }
         </tbody>
@@ -41,6 +42,7 @@ else
 
     <ClientDelete OnClick="@Delete" />
     <ConstructionAdd ConObject=conObject DataChanged="@DataChanged"><CustomHeader>@conHeader</CustomHeader></ConstructionAdd>
+    <ConCoJobs ConstructionCo="conObject"></ConCoJobs>
 
 
     @if (ShowPopup)
@@ -99,6 +101,11 @@ else
         {
             conObject = ConCo;
             conHeader = "Edit Construction Company";
+        }
+         private void PrepareForJobView(ConstructionCo ConCo)
+        {
+            conObject = ConCo;
+          
         }
 
         private void PrepareForDelete(ConstructionCo ConCo)

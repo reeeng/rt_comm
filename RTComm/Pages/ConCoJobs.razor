@@ -1,10 +1,10 @@
 ﻿@using RTComm.Data
 @using RTComm.Services
-@inject IJobService JobService
-@inject ICommentService commentService
+@inject IClientService Service
 @inject IJSRuntime jsRuntime
+@using Microsoft.JSInterop
 
-    <div class="modal" tabindex="-1" role="dialog" id="ClientJobModal">
+    <div class="modal" tabindex="-1" role="dialog" id="ConJobModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -28,24 +28,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (ClientObject.Jobs != null)
+                            @if (ConstructionCo.Jobs != null)
                             {
-                                @foreach (var job in ClientObject.Jobs)
+                                @foreach (var job in ConstructionCo.Jobs)
                                 {
-                                   
-                            <tr>
-                                <td>@job.Name</td>
-                                <td>@job.Cost.</td>
-                                <td>@job.Description.</td>
-                                <td>@job.IsActive</td>
-                            </tr>
-                                  
 
-                                        
-                                    }
+                                    <tr>
+                                        <td>@job.Name</td>
+                                        <td>@job.Cost.</td>
+                                        <td>@job.Description.</td>
+                                        <td>@job.IsActive</td>
+                                    </tr>
+
+
+
                                 }
-                            </tbody>
-                        </table>
+                            }
+                        </tbody>
+                    </table>
 
 
                 </div>
@@ -58,12 +58,11 @@
 
 @code {
     [Parameter]
-    public Client ClientObject { get; set; }
+    public ConstructionCo ConstructionCo { get; set; }
 
 
-    private async Task CloseClientJobModal()
+    private async Task CloseConcoJobModal()
     {
-        await jsRuntime.InvokeAsync<object>("CloseModal", "ClientJobModal");
+        await jsRuntime.InvokeAsync<object>("CloseModal", "ConJobModal");
     }
-
 }
