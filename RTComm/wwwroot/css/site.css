@@ -180,4 +180,32 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+
+    #h1{
+        text-align:center;
+    }
+    
+    body {
+        color:darkslateblue;
+        font-family:Corbel, Arial, Helvetica, sans-serif;
+        font-size: 18px;
+    }
+    
+    .video-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    #footer {
+        text-align:center;
+    
+    }
+
+
+
+
+
+
 }
