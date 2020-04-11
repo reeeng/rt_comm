@@ -2,6 +2,8 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0px;
+    line-height: 1.5;
 }
 
 a, .btn-link {
@@ -180,43 +182,53 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
-
-    #h1{
-        text-align:center;
-    }
-    
-    body {
-        color:darkslateblue;
-        font-family:Corbel, Arial, Helvetica, sans-serif;
-        font-size: 18px;
-    }
-    
-    .video-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-    }
-
-    div.Logo {
-  margin: 5px;
-  border: 1px solid #ccc;
-  float: left;
-  width: 180px;
-    }
-
-    div.Logo:hover {
-  border: 1px solid #777;
-    }
-
-    div.Logo img {
-  width: 100%;
-  height: auto;
-    }
-
-
 }
 
-#footer {
+main {
+ max-width: 800px;
+ margin: auto;
+ padding: 0px 20px;
+}
+img {
+    top: 90%;
+    max-width: 100%;
+}
+
+h1{
+    color: black;
+    border-bottom: 4px solid black;
     text-align:center;
+}
+
+p {text-align: center;}
+
+.column {
+    float: left;
+    width: 45%;
+    padding: 10px;
+}
+.column img {
+    margin-top: 30px;
+    width: 100%;
+}
+.row:after{
+    content: "";
+    display: table;
+    clear: both;
+}
+@media (max-width: 800px){.column{width:50%; }}
+@media (max-width: 600px){.column{width:100%; }}
+
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+footer {
+    color: white;
+    background-color: black;
+    padding:20px;
+    margin-top: 60px;
 }
