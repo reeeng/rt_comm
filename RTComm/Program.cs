@@ -17,7 +17,7 @@ namespace RTComm
             return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls($"{(env.Equals("Development") ? "http://localhost:5000" : "http://0.0.0.0:80")}");
+                webBuilder.UseUrls($"{(env.Equals("Development") ? "https://localhost:5001" : "http://0.0.0.0:80")}");
             });
         }
     }
